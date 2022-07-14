@@ -45,6 +45,7 @@ RUN apk add --no-cache tzdata --virtual .build-deps curl binutils zstd \
     && mv /tmp/libz/usr/lib/libz.so* /usr/glibc-compat/lib \
     && apk del --purge .build-deps glibc-i18n \
     && rm -rf /tmp/*.apk /tmp/gcc /tmp/gcc-libs.tar* /tmp/libz /tmp/libz.tar.xz /var/cache/apk/*
+    
 
 # java 版本
 ENV JAVA_VERSION jdk8u292-b10
@@ -71,6 +72,9 @@ RUN set -eux; \
     apk del --purge .fetch-deps; \
     rm -rf /var/cache/apk/*; \
     rm -rf /tmp/openjdk.tar.gz;
+    
+#解决Openjdk 验证码无法显示的问题
+RUN apk add fontconfig && apk add --update ttf-dejavu && fc-cache --force
 
 # 设置环境变量
 ENV JAVA_HOME=/opt/java/openjdk \
